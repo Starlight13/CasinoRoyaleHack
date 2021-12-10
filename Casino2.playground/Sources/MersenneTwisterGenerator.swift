@@ -42,7 +42,7 @@ public class MersenneTwisterGenerator {
         for i in 1..<n {
             let bitshift = (array[i-1] >> (w-2))
             let xor = array[i-1] ^ bitshift
-            var component = Int64(f) * xor + Int64(i)
+            let component = Int64(f) * xor + Int64(i)
             
             array.append(component & Int64("ffffffff", radix: 16)!)
 //            print(array[i])

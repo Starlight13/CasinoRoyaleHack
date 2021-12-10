@@ -25,25 +25,9 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 //}
 
 
-//let mt = MersenneTwister(seed: 81)
-//
-
-var arr = [Int64]()
-arr.append(35465212)
-arr.append(12345675)
-arr.append(76346573)
-
-let mt = MersenneTwisterGenerator(array: arr)
+let mt = MersenneTwisterGenerator(seed: 756)
 //
 for _ in 0..<50 {
     print(mt.next())
 }
 
-
-//Int64(120) >> Int64(2)
-//
-//Int64(786) ^ 0
-
-//let lcg = LCG()
-
-//lcg.helloWorld()
