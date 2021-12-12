@@ -57,7 +57,7 @@ func play(mode: Mode, id: String, bet: String, number: String, completionHandler
     var components = URLComponents(string: endpoint)!
     components.queryItems = [URLQueryItem(name: "id", value: id), URLQueryItem(name: "bet", value: bet), URLQueryItem(name: "number", value: number)]
     
-    
+    print(components.url!)
     let dataTask = URLSession.shared.dataTask(with: components.url!) { (data, _, error) in
         guard error == nil else {
             completionHandler(.failure(error!))
@@ -107,7 +107,7 @@ public func playSync(mode: Mode, id: String, bet: String, number: String) -> (Be
     let semaphore = DispatchSemaphore(value: 0)
     var betResult: BetResult?
     var resultError: Error?
-    play (mode: Mode.Mt, id: id, bet: bet, number: number) { result in
+    play (mode: mode, id: id, bet: bet, number: number) { result in
         switch result {
         case .success(let result):
             betResult = result

@@ -21,7 +21,7 @@ public class MersenneTwisterGenerator {
     let lowerMask = "7FFFFFFF";
     let upperMask = "80000000";
 
-    var array: [Int64];
+    public var array: [Int64];
     var index: Int;
 
     let seed: Int64?;
