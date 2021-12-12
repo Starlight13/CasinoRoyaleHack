@@ -3,31 +3,51 @@ import Foundation
 
 PlaygroundPage.current.needsIndefiniteExecution = true
 
-//createAccount (id: "13125"){ result in
-//    switch result {
-//    case .success(let account):
-//        print(account)
-//    default:
-//        print("Something Went Wrong")
-//    }
-//}
-
-//play (mode: Mode.Mt, id: "13125", bet: "1", number: "13") { result in
-//    switch result {
-//    case .success(let betResult):
-//        print(betResult)
-//    case .failure(let json):
-//        print(json)
-//    default:
-//        print("Something Went Wrong")
-//    }
-//
-//}
-
-
-let mt = MersenneTwisterGenerator(seed: 756)
-//
-for _ in 0..<50 {
-    print(mt.next())
+func winMT(userId: String) {
+    var seed: Int64 =  Int64(NSDate().timeIntervalSince1970)
+    var realNumbers = [Int64]()
+    var money = 0;
+    
+    for _ in 0..<20 {
+        let result = playSync(mode: Mode.Mt, id: userId, bet: "1", number: "13")
+        realNumbers.append(result.0!.realNumber!)
+        money = (result.0!.account?.money)!
+    }
+    
+    print("Money: \(money)")
+    var mt: MersenneTwisterGenerator?
+    
+infinite: while true {
+    mt = MersenneTwisterGenerator(seed: seed)
+    for (index, realNumber) in realNumbers.enumerated() {
+        if mt?.next() == realNumber {
+            if (index == realNumbers.count-1) {
+                print("Seed is: \(seed)")
+                break infinite
+            }
+        } else {
+            break
+        }
+    }
+    seed -= 1
 }
+    
+    print("Money: \(money)")
+    while true {
+        let result = playSync (mode: Mode.Mt, id: userId, bet: String(money), number: String(mt!.next())).0
+        guard result != nil else {
+            return
+        }
+        
+        money = (result?.account?.money)!
+        if (money >= 1000000) {
+            print("You won! 🎉🎉🎉")
+            break
+        }
+    }
+    
+}
+
+let userId = getAccountId()
+winMT(userId: userId)
 

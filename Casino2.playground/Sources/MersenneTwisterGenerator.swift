@@ -45,7 +45,6 @@ public class MersenneTwisterGenerator {
             let component = Int64(f) * xor + Int64(i)
             
             array.append(component & Int64("ffffffff", radix: 16)!)
-//            print(array[i])
         }
         
     }
