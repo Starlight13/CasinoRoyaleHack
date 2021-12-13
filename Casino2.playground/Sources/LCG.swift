@@ -1,35 +1,36 @@
 import Foundation
+import BigInt
 
-
-extension NSDecimalNumber {
-    func modInverse (modulus: NSDecimalNumber) -> NSDecimalNumber {
-        return self.raising(toPower: -1).raising(toPower: modulus.intValue)
-    }
-    
-    func mod (modulus: NSDecimalNumber) {
-        
-    }
-}
-
-public class LcgConstants {
+public class LCG {
 
     var a: Int64;
     var m: Int64;
     var c: Int64;
     
-    init() {
-        a = 0
-        m = 0
-        c = 0
+    var lastNumber: Int64;
+    
+    public init(numbers: [Int64]) {
+        a = 0;
+        c = 0;
+        m = Int64(pow(2, 32.0))
+        lastNumber = numbers[numbers.count - 1]
+        evalConstants(numbers: numbers)
     }
     
-    public func evalConstants (numbers: [Int64]) {
-        m = Int64(pow(2, 32.0))
+    func evalConstants (numbers: [Int64]) {
         
-        let a1 = NSDecimalNumber(value: numbers[1]).subtracting(NSDecimalNumber(value: numbers[2]))
+        let a1 = BigInt(numbers[1]) - BigInt(numbers[2])
+        let a2 = BigInt(numbers[0]) - BigInt(numbers[1])
         
-        let a2 = NSDecimalNumber(value: numbers[0]).subtracting(NSDecimalNumber(value: numbers[1]))
+        a = Int64((a1 * (a2.inverse(BigInt(m))!)) % BigInt(m));
         
-        self.a = a1.multiplying(by: a2.modInverse(modulus: NSDecimalNumber(value: m))).int64Value
+        c = (numbers[1] - a * numbers[0]) % m
+        
+        print("a: \(a), m: \(m), c: \(c)")
+    }
+    
+    public func next() -> Int64 {
+        lastNumber = (lastNumber * a + c) % m;
+        return lastNumber;
     }
 }

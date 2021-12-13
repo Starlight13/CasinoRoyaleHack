@@ -4,33 +4,31 @@ import Foundation
 PlaygroundPage.current.needsIndefiniteExecution = true
 
 
-//func winLCG() {
-//    let userId = getAccountId()
-//    var money = 0;
-//
-//    var realNumbers = [Int64]()
-//
-//    for _ in 0..<3 {
-//        let result = playSync(mode: Mode.Lcg, id: userId, bet: "1", number: "13")
-//        realNumbers.append((result.0?.realNumber)!)
-//        money = (result.0!.account?.money)!
-//    }
-//
-//    print(money)
-//
-//    let lcg = LCG()
-//
-//    lcg.evalConstants(numbers: realNumbers)
-//
-//    while true {
-//        let result = playSync(mode: Mode.Lcg, id: userId, bet: String(money), number: String(lcg.next()))
-//        money = (result.0!.account?.money)!
-//        if money >= 1000000 {
-//            print("You won! 🎉🎉🎉")
-//            break
-//        }
-//    }
-//}
+func winLCG() {
+    let userId = getAccountId()
+    var money = 0;
+
+    var realNumbers = [Int64]()
+
+    for _ in 0..<3 {
+        let result = playSync(mode: Mode.Lcg, id: userId, bet: "1", number: "13")
+        realNumbers.append((result.0?.realNumber)!)
+        money = (result.0!.account?.money)!
+    }
+
+    print(money)
+
+    let lcg = LCG(numbers: realNumbers)
+
+    while true {
+        let result = playSync(mode: Mode.Lcg, id: userId, bet: String(money), number: String(Int32(truncatingIfNeeded: lcg.next())))
+        money = (result.0!.account?.money)!
+        if money >= 1000000 {
+            print("You won! 🎉🎉🎉")
+            break
+        }
+    }
+}
 
 func winMT() {
     let userId = getAccountId()
@@ -106,7 +104,7 @@ func winMTBetter() {
 }
 
 
-//winLCG()
+winLCG()
 //winMT()
 //winMTBetter()
 
